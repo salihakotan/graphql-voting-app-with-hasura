@@ -18,8 +18,12 @@ function QuestionDetail() {
     }
   );
 
+  const [isVoted, setIsVoted] = useState(false)
+
   const [newVote, { loading: loadingVote, data: voteData }] =
-    useMutation(NEW_VOTE_MUTATION);
+    useMutation(NEW_VOTE_MUTATION, {
+      onCompleted:()=> setIsVoted(true)
+    });
 
   if (loading) {
     return <Loading />;
@@ -73,23 +77,28 @@ function QuestionDetail() {
                 onChange={({ target }) => setSelectedOptionId(target.value)}
               />
               <span>{option.title}</span>
-              <span style={{marginLeft:"10px"}}>({((option.votes_aggregate.aggregate.count * 100) / totalVotes).toFixed(2)}%)</span>
+              <span style={{marginLeft:"10px"}}>({((option.votes_aggregate.aggregate.count * 100) / (totalVotes===0 ? 1 : totalVotes)).toFixed(2)}%)</span>
             </label>
 
-            <div>
+            {isVoted && (
+              <div>
               <progress
                 value={option.votes_aggregate.aggregate.count}
                 max={totalVotes}
               />
             </div>
+            )}
           </div>
         ))}
 
         <br />
         <br />
-        <button disabled={loadingVote} onClick={handleClickVote}>
+       
+       {
+        !isVoted &&  <button disabled={loadingVote} onClick={handleClickVote}>
           Vote
         </button>
+       }
       </div>
     </>
   );

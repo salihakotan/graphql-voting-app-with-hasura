@@ -1,0 +1,10 @@
+.questionsGrid{
+    display: grid;
+    grid-template-columns: repeat(2,100px);
+
+}
+
+input {
+    width: 300px;
+    margin:5px
+}

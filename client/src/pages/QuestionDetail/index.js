@@ -87,6 +87,8 @@ function QuestionDetail() {
               )}
             </label>
 
+            
+
             {isVoted && (
               <div>
                 <progress

@@ -18,12 +18,14 @@ function QuestionDetail() {
     }
   );
 
-  const [isVoted, setIsVoted] = useState(false)
+  const [isVoted, setIsVoted] = useState(false);
 
-  const [newVote, { loading: loadingVote, data: voteData }] =
-    useMutation(NEW_VOTE_MUTATION, {
-      onCompleted:()=> setIsVoted(true)
-    });
+  const [newVote, { loading: loadingVote, data: voteData }] = useMutation(
+    NEW_VOTE_MUTATION,
+    {
+      onCompleted: () => setIsVoted(true),
+    }
+  );
 
   if (loading) {
     return <Loading />;
@@ -32,7 +34,6 @@ function QuestionDetail() {
   if (error) {
     return <div>Error: {error.message}</div>;
   }
-
 
   const {
     questions_by_pk: { options, title },
@@ -53,17 +54,11 @@ function QuestionDetail() {
     });
   };
 
-
-
-
-
-
-  
   return (
     <>
       <div>Question Detail {id}</div>
-      <h1>{title}?</h1> 
- 
+      <h1>{title}?</h1>
+
       <div>
         {options.map((option, i) => (
           <div key={i}>
@@ -77,28 +72,38 @@ function QuestionDetail() {
                 onChange={({ target }) => setSelectedOptionId(target.value)}
               />
               <span>{option.title}</span>
-              <span style={{marginLeft:"10px"}}>({((option.votes_aggregate.aggregate.count * 100) / (totalVotes===0 ? 1 : totalVotes)).toFixed(2)}%)</span>
+
+              {isVoted && (
+                <span style={{ marginLeft: "10px" }}>
+                  (
+                  {(
+                    (option.votes_aggregate.aggregate.count * 100) /
+                    (totalVotes === 0 ? 1 : totalVotes)
+                  ).toFixed(2)}
+                  %)
+                </span>
+              )}
             </label>
 
             {isVoted && (
               <div>
-              <progress
-                value={option.votes_aggregate.aggregate.count}
-                max={totalVotes}
-              />
-            </div>
+                <progress
+                  value={option.votes_aggregate.aggregate.count}
+                  max={totalVotes}
+                />
+              </div>
             )}
           </div>
         ))}
 
         <br />
         <br />
-       
-       {
-        !isVoted &&  <button disabled={loadingVote} onClick={handleClickVote}>
-          Vote
-        </button>
-       }
+
+        {!isVoted && (
+          <button disabled={loadingVote} onClick={handleClickVote}>
+            Vote
+          </button>
+        )}
       </div>
     </>
   );

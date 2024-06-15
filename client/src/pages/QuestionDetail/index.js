@@ -72,6 +72,7 @@ function QuestionDetail() {
                 onChange={({ target }) => setSelectedOptionId(target.value)}
               />
               
+
               <span>{option.title}</span>
 
               {isVoted && (
@@ -96,6 +97,7 @@ function QuestionDetail() {
             )}
           </div>
         ))}
+
 
         <br />
         <br />

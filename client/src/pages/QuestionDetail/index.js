@@ -71,6 +71,7 @@ function QuestionDetail() {
                 value={option.id}
                 onChange={({ target }) => setSelectedOptionId(target.value)}
               />
+              
               <span>{option.title}</span>
 
               {isVoted && (
